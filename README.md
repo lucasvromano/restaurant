@@ -1,5 +1,5 @@
 # Restaurante
-Sistema pequeno de um restaurante
+Sistema de um restaurante (com finalidade de estudos)
 
 ## Telas
 - Login
