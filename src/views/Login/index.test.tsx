@@ -7,11 +7,13 @@ import { BrowserRouter as Router, MemoryRouter, Route, Routes } from "react-rout
 
 //components
 import Login from ".";
-import Orders from "../Orders";
+import Services from "../Services";
 
 // utils
 import { resizeWindow } from '../../utils/resizeWindow'
 import ForgotPassword from "../ForgotPassword";
+import { Provider } from "react-redux";
+import store from "../../store";
 
 const loginIsRendered = (
   <Router>
@@ -79,7 +81,7 @@ describe('Login Page', () => {
       </MemoryRouter>
     )
 
-    const forgotPasswordButton = screen.getByRole('forgot-password') 
+    const forgotPasswordButton = screen.getByRole('forgot-password')
     fireEvent.click(forgotPasswordButton)
 
     await waitFor(() => {
@@ -89,21 +91,24 @@ describe('Login Page', () => {
 
   })
 
-  test('Deve ir para a página de Pedidos', async () => {
+  test('Deve ir para a página de Atendimentos', async () => {
     render(
-      <MemoryRouter initialEntries={['/']}>
-        <Routes>
-          <Route path='/' element={<Login />} />
-          <Route path='/pedidos' element={<Orders />} />
-        </Routes>
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/']}>
+          <Routes>
+            <Route path='/' element={<Login />} />
+            <Route path='/atendimentos' element={<Services />} />
+          </Routes>
+        </MemoryRouter>
+      </Provider>
     )
 
-    fireEvent.click(screen.getByRole('orders'))
+    const servicesButton = screen.getByRole('services')
+    fireEvent.click(servicesButton)
 
     await waitFor(() => {
-      const textHome = screen.getByText(/Pedidos/i)
-      expect(textHome).toBeInTheDocument()
+      const containerServices = screen.getByRole('container-services')
+      expect(containerServices).toBeInTheDocument()
     })
   })
 })

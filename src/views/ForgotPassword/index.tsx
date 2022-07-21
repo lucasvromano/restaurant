@@ -14,7 +14,7 @@ const ForgotPassword = () => {
     setEmail(e.target.value)
   }
 
-  const sendData = (event: { preventDefault: () => void }) => {
+  const handleSubmit = (event: { preventDefault: () => void }) => {
     event?.preventDefault()
     console.log(email)
     setEmail('')
@@ -46,7 +46,7 @@ const ForgotPassword = () => {
           Digite seu e-mail para recuperar a senha.
         </Typography>
 
-        <form onSubmit={sendData}>
+        <form onSubmit={handleSubmit}>
           <Box pb={2}>
             <TextField
               id='email'

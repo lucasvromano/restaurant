@@ -27,7 +27,7 @@ const Login = () => {
     setFormData(emptyFormData)
   }
 
-  const formLogin = (e: { preventDefault: () => void }) => {
+  const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault()
     console.log(formData)
     clearForm()
@@ -65,7 +65,7 @@ const Login = () => {
           Sistema para restaurantes
         </Typography>
 
-        <form onSubmit={formLogin}>
+        <form onSubmit={handleSubmit}>
 
           <Box mb={3}>
             <TextField
@@ -109,7 +109,7 @@ const Login = () => {
               <Button>Cadastre-se</Button>
             </Link>
 
-            <Link role='orders' to='/pedidos'>
+            <Link role='services' to='/atendimentos'>
               <Button variant='contained'>Entrar</Button>
             </Link>
           </Box>
