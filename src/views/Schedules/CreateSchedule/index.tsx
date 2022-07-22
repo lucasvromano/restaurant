@@ -1,13 +1,14 @@
-import { Button, TextField, Typography, Box, Grid } from "@mui/material"
-import SaveIcon from '@mui/icons-material/Save'
 import { useState } from "react"
-import MiniDrawer from "../../../components/MiniDrawer"
+import { useDispatch } from 'react-redux';
+import { Link } from "react-router-dom"
 
 import { v4 as uuid } from 'uuid'
 
-import { useDispatch } from 'react-redux';
+import { Button, TextField, Typography, Box, Grid } from "@mui/material"
+import SaveIcon from '@mui/icons-material/Save'
+import MiniDrawer from "../../../components/MiniDrawer"
+
 import { addSchedules } from "../../../store/reducers/schedules";
-import { Link } from "react-router-dom"
 
 const emptyFormData = {
   id: '',
@@ -26,7 +27,6 @@ const CreateService = () => {
   const handleChange = (target: EventTarget & (HTMLInputElement | HTMLTextAreaElement)) => {
     setFormData({
       ...formData,
-      // id: uuid(),
       [target.name]: target.value
     })
   }

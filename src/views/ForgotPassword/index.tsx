@@ -1,7 +1,9 @@
 
-import { Box, Typography, Grid, TextField, Button } from '@mui/material'
 import { SetStateAction, useState } from 'react'
 import { Link } from 'react-router-dom'
+
+import { Box, Typography, Grid, TextField, Button } from '@mui/material'
+
 import useResize from '../../hooks/useResize'
 
 const ForgotPassword = () => {

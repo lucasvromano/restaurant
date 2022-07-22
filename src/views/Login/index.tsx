@@ -1,9 +1,10 @@
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { Box, Grid, TextField, Typography, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton, Button } from '@mui/material'
-import { useState } from 'react'
-import useResize from '../../hooks/useResize'
 
-import { Link } from 'react-router-dom'
+import useResize from '../../hooks/useResize'
 
 import './styles.css'
 

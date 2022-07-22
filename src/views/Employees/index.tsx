@@ -1,11 +1,14 @@
+import { Link } from "react-router-dom"
+import { useSelector } from "react-redux";
+
 import { Box, Button, Stack, Typography } from "@mui/material"
 import { DataGrid, GridColDef, ptBR } from "@mui/x-data-grid"
-import { Link } from "react-router-dom"
-import MiniDrawer from "../../components/MiniDrawer"
-
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
+
+import MiniDrawer from "../../components/MiniDrawer"
+import { RootState } from '../../store';
 
 const columns: GridColDef[] = [
   // {
@@ -39,6 +42,11 @@ const columns: GridColDef[] = [
     width: 300,
   },
   {
+    field: 'birthday',
+    headerName: 'Data Nasc.',
+    width: 300,
+  },
+  {
     field: 'options',
     headerName: 'Opções',
     description: 'Opção de edição ou exclusão do funcionário.',
@@ -63,18 +71,10 @@ const columns: GridColDef[] = [
   },
 ];
 
-const employees = [
-  {
-    id: '1',
-    name: 'José',
-    document: '123456789',
-    phone: '1564',
-    email: '456',
-    salary: '456'
-  }
-]
-
 const Employees = () => {
+
+  const employees = useSelector((state: RootState) => state.employees);
+  
   return (
     <MiniDrawer title="Funcionários">
       <Stack role="container-users">
