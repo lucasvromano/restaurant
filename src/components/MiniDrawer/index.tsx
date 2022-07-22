@@ -1,12 +1,6 @@
 import * as React from 'react';
 import { useTheme, Box, Toolbar, List, Typography, Divider, IconButton, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import PersonIcon from '@mui/icons-material/Person';
-import PeopleIcon from '@mui/icons-material/People';
+import { Badge, Menu, ChevronLeft, ChevronRight, CalendarMonth, Person, People } from '@mui/icons-material';
 
 import * as S from './styles'
 
@@ -19,17 +13,22 @@ const listItems = [
   {
     text: 'Agendamento',
     link: '/agendamentos',
-    icon: (<CalendarMonthIcon />)
+    icon: (<CalendarMonth />)
   },
   {
-    text: 'Usuários',
-    link: '/usuarios',
-    icon: (<PersonIcon />)
+    text: 'Clientes',
+    link: '/clientes',
+    icon: (<People />)
   },
   {
     text: 'Funcionários',
     link: '/funcionarios',
-    icon: (<PeopleIcon />)
+    icon: (<Badge />)
+  },
+  {
+    text: 'Usuários',
+    link: '/usuarios',
+    icon: (<Person />)
   }
 ]
 
@@ -59,7 +58,7 @@ const MiniDrawer = ({ title, children }: MiniDrawerType) => {
               ...(open && { display: 'none' }),
             }}
           >
-            <MenuIcon />
+            <Menu />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
             {title}
@@ -69,7 +68,7 @@ const MiniDrawer = ({ title, children }: MiniDrawerType) => {
       <S.Drawer variant="permanent" open={open}>
         <S.DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            {theme.direction === 'rtl' ? <ChevronRight /> : <ChevronLeft />}
           </IconButton>
         </S.DrawerHeader>
         <Divider />
