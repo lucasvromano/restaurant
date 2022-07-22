@@ -2,6 +2,7 @@ import { styled, Theme, CSSObject } from '@mui/material/styles';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import MuiDrawer from '@mui/material/Drawer';
 
+import { Link as LinkRouter } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -73,3 +74,7 @@ export const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 
     }),
   }),
 );
+
+export const Link = styled(LinkRouter)({
+  color: 'rgba(0, 0, 0, 0.54)'
+});

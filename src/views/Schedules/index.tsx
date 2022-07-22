@@ -11,44 +11,41 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { Link } from 'react-router-dom';
 
-
-
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'ID', width: 50 },
+  // {
+  //   field: 'id',
+  //   headerName: 'ID',
+  //   width: 150
+  // },
   {
     field: 'customer',
     headerName: 'Cliente',
     width: 200,
-    editable: true,
   },
   {
     field: 'employee',
     headerName: 'Funcionário',
     width: 200,
-    editable: true,
   },
   {
     field: 'services',
     headerName: 'Atendimento',
     width: 330,
-    editable: true,
   },
   {
     field: 'price',
     headerName: 'Valor',
     width: 90,
-    editable: true,
   },
   {
     field: 'date',
     headerName: 'Data/Hora',
     width: 150,
-    editable: true,
   },
   {
     field: 'options',
     headerName: 'Opções',
-    description: 'This column has a value getter and is not sortable.',
+    description: 'Opção de edição ou exclusão do agendamento.',
     sortable: false,
     filterable: false,
     width: 150,
@@ -71,20 +68,20 @@ const columns: GridColDef[] = [
   },
 ];
 
-const Services = () => {
+const Schedules = () => {
 
-  const services = useSelector((state: RootState) => state.services);
+  const schedules = useSelector((state: RootState) => state.schedules);
 
   return (
     <>
-      <MiniDrawer title="Atendimentos">
-        <Stack role="container-services">
+      <MiniDrawer title="Agendamento">
+        <Stack role="container-schedules">
           <Box mb={3} display='flex' justifyContent='space-between'>
             <Typography variant='h4' component='h1' >
-              Atendimentos
+              Agendamento
             </Typography>
 
-            <Link to='/atendimentos/cadastrar'>
+            <Link to='/agendamentos/cadastrar'>
               <Button
                 startIcon={<AddIcon />}
                 color='success'>
@@ -95,7 +92,7 @@ const Services = () => {
 
           <Box bgcolor='white' width='100%' height={400}>
             <DataGrid
-              rows={services}
+              rows={schedules}
               columns={columns}
               pageSize={10}
               rowsPerPageOptions={[10]}
@@ -110,4 +107,4 @@ const Services = () => {
   )
 }
 
-export default Services
+export default Schedules

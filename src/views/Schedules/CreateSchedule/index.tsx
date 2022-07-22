@@ -6,8 +6,8 @@ import MiniDrawer from "../../../components/MiniDrawer"
 import { v4 as uuid } from 'uuid'
 
 import { useDispatch } from 'react-redux';
-import { addService } from "../../../store/reducers/services";
-
+import { addSchedules } from "../../../store/reducers/schedules";
+import { Link } from "react-router-dom"
 
 const emptyFormData = {
   id: '',
@@ -18,34 +18,40 @@ const emptyFormData = {
   date: '',
 }
 
-
 const CreateService = () => {
 
   const [formData, setFormData] = useState(emptyFormData)
   const dispatch = useDispatch()
 
   const handleChange = (target: EventTarget & (HTMLInputElement | HTMLTextAreaElement)) => {
-    setFormData({ 
-      ...formData, 
-      id: uuid(), 
-      [target.name]: target.value })
+    setFormData({
+      ...formData,
+      // id: uuid(),
+      [target.name]: target.value
+    })
   }
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault()
-    dispatch(addService(formData))
+    dispatch(addSchedules({
+      id: uuid(),
+      customer: formData.customer,
+      employee: formData.employee,
+      services: formData.services,
+      price: formData.price,
+      date: formData.date,
+    }))
     setFormData(emptyFormData)
   }
 
   return (
-    <MiniDrawer title="Cadastrar Atendimento">
+    <MiniDrawer title="Cadastrar Agendamento">
       <Typography variant='h4' component='h1' >
-        Cadastrar Atendimento
+        Cadastrar Agendamento
       </Typography>
 
-      <Box my={3} >
+      <Box my={3}>
         <form onSubmit={handleSubmit}>
-
 
           <Grid container spacing={3}>
 
@@ -117,9 +123,11 @@ const CreateService = () => {
             justifyContent='space-between'
             mt={3}>
 
-            <Button>
-              Voltar
-            </Button>
+            <Link to="/agendamentos">
+              <Button>
+                Voltar
+              </Button>
+            </Link>
 
             <Button
               startIcon={<SaveIcon />}

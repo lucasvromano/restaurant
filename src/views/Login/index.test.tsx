@@ -7,7 +7,7 @@ import { BrowserRouter as Router, MemoryRouter, Route, Routes } from "react-rout
 
 //components
 import Login from ".";
-import Services from "../Services";
+import Schedules from "../Schedules";
 
 // utils
 import { resizeWindow } from '../../utils/resizeWindow'
@@ -97,18 +97,18 @@ describe('Login Page', () => {
         <MemoryRouter initialEntries={['/']}>
           <Routes>
             <Route path='/' element={<Login />} />
-            <Route path='/atendimentos' element={<Services />} />
+            <Route path='/agendamentos' element={<Schedules />} />
           </Routes>
         </MemoryRouter>
       </Provider>
     )
 
-    const servicesButton = screen.getByRole('services')
-    fireEvent.click(servicesButton)
+    const schedulessButton = screen.getByRole('schedules')
+    fireEvent.click(schedulessButton)
 
     await waitFor(() => {
-      const containerServices = screen.getByRole('container-services')
-      expect(containerServices).toBeInTheDocument()
+      const containerSchedule = screen.getByRole('container-schedules')
+      expect(containerSchedule).toBeInTheDocument()
     })
   })
 })

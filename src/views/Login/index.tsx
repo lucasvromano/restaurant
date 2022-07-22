@@ -33,10 +33,6 @@ const Login = () => {
     clearForm()
   }
 
-  const handleShowPassword = () => {
-    setIsShowPassword(!isShowPassword)
-  }
-
   return (
     <Grid
       container
@@ -93,7 +89,7 @@ const Login = () => {
                   <IconButton
                     role='iconPassword'
                     aria-label='toggle password visibility'
-                    onClick={handleShowPassword}
+                    onClick={() => setIsShowPassword(!isShowPassword)}
                     edge='end'
                   >
                     {isShowPassword ? <VisibilityOff data-testid='visibilityOff' /> : <Visibility data-testid='visibility' />}
@@ -109,7 +105,7 @@ const Login = () => {
               <Button>Cadastre-se</Button>
             </Link>
 
-            <Link role='services' to='/atendimentos'>
+            <Link role='schedules' to='/agendamentos'>
               <Button variant='contained'>Entrar</Button>
             </Link>
           </Box>

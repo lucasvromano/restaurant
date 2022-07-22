@@ -5,9 +5,11 @@ import {
   Route,
 } from "react-router-dom";
 import ForgotPassword from "./ForgotPassword";
-import Services from "./Services";
+import Schedules from "./Schedules";
 import Login from "./Login";
-import CreateService from "./Services/CreateService";
+import CreateSchedule from "./Schedules/CreateSchedule";
+import Users from "./Users";
+import CreateUser from "./Users/CreateUser";
 
 const App = () => {
 
@@ -17,8 +19,12 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/esqueci-a-senha" element={<ForgotPassword />} />
-          <Route path="/atendimentos" element={<Services />} />
-          <Route path="/atendimentos/cadastrar" element={<CreateService />} />
+
+          <Route path="/agendamentos" element={<Schedules />} />
+          <Route path="/agendamentos/cadastrar" element={<CreateSchedule />} />
+
+          <Route path="/usuarios" element={<Users />} />
+          <Route path="/usuarios/cadastrar" element={<CreateUser />} />
         </Routes>
       </Router>
     </>

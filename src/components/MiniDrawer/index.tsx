@@ -4,8 +4,8 @@ import { useTheme, Box, Toolbar, List, Typography, Divider, IconButton, ListItem
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import PersonIcon from '@mui/icons-material/Person';
 
 import * as S from './styles'
 
@@ -13,6 +13,19 @@ type MiniDrawerType = {
   title: string,
   children: React.ReactNode
 }
+
+const listItems = [
+  {
+    text: 'Agendamento',
+    link: '/agendamentos',
+    icon: (<CalendarMonthIcon />)
+  },
+  {
+    text: 'Usuários',
+    link: '/usuarios',
+    icon: (<PersonIcon />)
+  }
+]
 
 const MiniDrawer = ({ title, children }: MiniDrawerType) => {
   const theme = useTheme();
@@ -55,26 +68,28 @@ const MiniDrawer = ({ title, children }: MiniDrawerType) => {
         </S.DrawerHeader>
         <Divider />
         <List>
-          {['Pedidos', 'Usuários', 'Receitas', 'Sair'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
+          {listItems.map((item, index) => (
+            <ListItem key={index} disablePadding sx={{ display: 'block' }}>
+              <S.Link to={item.link}>
+                <ListItemButton
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
+                    minHeight: 48,
+                    justifyContent: open ? 'initial' : 'center',
+                    px: 2.5,
                   }}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : 'auto',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={item.text} sx={{ opacity: open ? 1 : 0 }} />
+                </ListItemButton>
+              </S.Link>
             </ListItem>
           ))}
         </List>

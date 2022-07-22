@@ -1,13 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import servicesReducer from './reducers/services'
+import schedulesReducer from './reducers/schedules'
+import usersReducer from './reducers/users'
 
 const rootReducer = {
-  services: servicesReducer
+  schedules: schedulesReducer,
+  users: usersReducer,
 }
 
 export type RootState = {
-  services: [],
+  schedules: [],
+  users: [],
 }
 
 export default configureStore({ reducer: rootReducer })
