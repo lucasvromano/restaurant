@@ -6,6 +6,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import PersonIcon from '@mui/icons-material/Person';
+import PeopleIcon from '@mui/icons-material/People';
 
 import * as S from './styles'
 
@@ -24,6 +25,11 @@ const listItems = [
     text: 'Usuários',
     link: '/usuarios',
     icon: (<PersonIcon />)
+  },
+  {
+    text: 'Funcionários',
+    link: '/funcionarios',
+    icon: (<PeopleIcon />)
   }
 ]
 

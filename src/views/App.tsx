@@ -10,6 +10,8 @@ import Login from "./Login";
 import CreateSchedule from "./Schedules/CreateSchedule";
 import Users from "./Users";
 import CreateUser from "./Users/CreateUser";
+import Employees from "./Employees";
+import CreateEmployee from "./Employees/CreateEmployee";
 
 const App = () => {
 
@@ -25,6 +27,9 @@ const App = () => {
 
           <Route path="/usuarios" element={<Users />} />
           <Route path="/usuarios/cadastrar" element={<CreateUser />} />
+
+          <Route path="/funcionarios" element={<Employees />} />
+          <Route path="/funcionarios/cadastrar" element={<CreateEmployee />} />
         </Routes>
       </Router>
     </>
