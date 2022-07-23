@@ -103,7 +103,7 @@ const Login = () => {
 
           <Box pt={3} display='flex' justifyContent='space-between'>
             <Link role='forgot-password' to='/esqueci-a-senha'>
-              <Button>Cadastre-se</Button>
+              <Button>Esqueci minha senha</Button>
             </Link>
 
             <Link role='schedules' to='/agendamentos'>

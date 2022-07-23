@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useTheme, Box, Toolbar, List, Typography, Divider, IconButton, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import { Badge, Menu, ChevronLeft, ChevronRight, CalendarMonth, Person, People } from '@mui/icons-material';
+import { Badge, Menu, ChevronLeft, ChevronRight, CalendarMonth, Person, People, ExitToApp } from '@mui/icons-material';
 
 import * as S from './styles'
 
@@ -29,6 +29,11 @@ const listItems = [
     text: 'Usuários',
     link: '/usuarios',
     icon: (<Person />)
+  },
+  {
+    text: 'Sair',
+    link: '/',
+    icon: (<ExitToApp />)
   }
 ]
 
