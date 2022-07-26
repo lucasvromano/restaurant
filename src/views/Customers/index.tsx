@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useState } from 'react'
 import { Link } from 'react-router-dom';
 
 import { DataGrid, GridColDef, ptBR } from '@mui/x-data-grid';
@@ -9,14 +9,11 @@ import AddIcon from '@mui/icons-material/Add';
 import { Box } from '@mui/system';
 
 import MiniDrawer from '../../components/MiniDrawer'
-import { RootState } from '../../store';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { getAllCustomers } from '../../store/reducers/customers/handlers/getAllCustomers';
 
 const columns: GridColDef[] = [
-  // {
-  //   field: 'id',
-  //   headerName: 'ID',
-  //   width: 150
-  // },
   {
     field: 'name',
     headerName: 'Nome',
@@ -69,15 +66,24 @@ const columns: GridColDef[] = [
 ];
 
 const Customers = () => {
+  const dispatch = useDispatch<any>();
+  const [customers, setCustomers] = useState([])
 
-  const customers = useSelector((state: RootState) => state.customers);
+  useEffect(() => {
+    const getCustomers = async () => {
+      const response = await dispatch(getAllCustomers())
+      setCustomers(response?.payload)
+      return response;
+    }
+    getCustomers()
+  }, [])
 
   return (
     <>
       <MiniDrawer title="Clientes">
         <Stack role="container-schedules">
           <Box mb={3} display='flex' justifyContent='space-between'>
-            <Typography variant='h4' component='h1' >
+            <Typography variant='h4' component='h1'>
               Clientes
             </Typography>
 
