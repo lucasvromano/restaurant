@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { Box, Button, Stack, Typography } from "@mui/material"
 import { DataGrid, GridColDef, ptBR } from "@mui/x-data-grid"
@@ -8,14 +8,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 
 import MiniDrawer from "../../components/MiniDrawer"
-import { RootState } from '../../store';
+import { useEffect, useState } from "react";
+import { getAllUsers } from "../../store/reducers/users/handlers/getAllUsers";
 
 const columns: GridColDef[] = [
-  // {
-  //   field: 'id',
-  //   headerName: 'ID',
-  //   width: 150
-  // },
   {
     field: 'employee',
     headerName: 'Funcionário',
@@ -51,9 +47,25 @@ const columns: GridColDef[] = [
   },
 ];
 
-
 const Users = () => {
-  const users = useSelector((state: RootState) => state.users);
+  const dispatch = useDispatch<any>();
+  const [users, setUsers] = useState([])
+
+  useEffect(() => {
+    const getUsers = async () => {
+      const response = await dispatch(getAllUsers())
+
+      const userList = response?.payload.map((item: any) => ({
+        id: item.id,
+        employee: item.employee.name,
+        user: item.user
+      }))
+
+      setUsers(userList)
+      return response;
+    }
+    getUsers()
+  }, [dispatch])
 
   return (
     <MiniDrawer title="Usuários">

@@ -1,18 +1,19 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import customers from './reducers/customers/index'
-
+import employees from './reducers/employees/index'
+import users from './reducers/users/index'
 
 const reducer = combineReducers({
-  customers
+  customers,
+  employees,
+  users,
 })
-
 
 const store = configureStore({
   reducer
 })
 
 export default store
-
 
 
 // import { configureStore } from '@reduxjs/toolkit'

@@ -1,8 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
-export const getAllCustomers = createAsyncThunk('customers/get', async (payload, { rejectWithValue }) => {
+export const getAllEmployees = createAsyncThunk('employees/get', async (payload, { rejectWithValue }) => {
   try {
-    const baseUrl = 'http://localhost:3001/customers';
+    const baseUrl = 'http://localhost:3001/employees';
     const requestOptions = {
       method: 'GET'
     }

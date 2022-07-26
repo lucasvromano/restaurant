@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Box, Button, Stack, Typography } from "@mui/material"
 import { DataGrid, GridColDef, ptBR } from "@mui/x-data-grid"
@@ -8,14 +8,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 
 import MiniDrawer from "../../components/MiniDrawer"
-import { RootState } from '../../store';
+import { useEffect, useState } from "react";
+import { getAllEmployees } from "../../store/reducers/employees/handlers/getAllEmployees";
 
 const columns: GridColDef[] = [
-  // {
-  //   field: 'id',
-  //   headerName: 'ID',
-  //   width: 150
-  // },
   {
     field: 'name',
     headerName: 'Nome',
@@ -72,9 +68,18 @@ const columns: GridColDef[] = [
 ];
 
 const Employees = () => {
+  const dispatch = useDispatch<any>();
+  const [employees, setEmployees] = useState([])
 
-  const employees = useSelector((state: RootState) => state.employees);
-  
+  useEffect(() => {
+    const getEmployees = async () => {
+      const response = await dispatch(getAllEmployees())
+      setEmployees(response?.payload)
+      return response;
+    }
+    getEmployees()
+  }, [])
+
   return (
     <MiniDrawer title="Funcionários">
       <Stack role="container-users">
