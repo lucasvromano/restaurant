@@ -7,7 +7,6 @@ export const getAllCustomers = createAsyncThunk('customers', async (payload, { r
       method: 'GET'
     }
     const fetchResponse = await fetch(baseUrl, requestOptions)
-    // const response = await apiHelpers.handleStatus(fetchResponse)
     return fetchResponse.json()
 
   } catch (err) {
