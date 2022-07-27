@@ -2,16 +2,13 @@ import { useState } from "react"
 import { useDispatch } from 'react-redux';
 import { Link } from "react-router-dom"
 
-import { v4 as uuid } from 'uuid'
-
 import { Button, TextField, Typography, Box, Grid } from "@mui/material"
 import SaveIcon from '@mui/icons-material/Save'
 import MiniDrawer from "../../../components/MiniDrawer"
 
-import { addCustomer } from "../../../store/reducers/customers";
+import { createCustomer } from "../../../store/reducers/customers/handlers/createCustomer";
 
 const emptyFormData = {
-  id: '',
   name: '',
   document: '',
   phone: '',
@@ -22,7 +19,7 @@ const emptyFormData = {
 const CreateCustomer = () => {
 
   const [formData, setFormData] = useState(emptyFormData)
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<any>()
 
   const handleChange = (target: EventTarget & (HTMLInputElement | HTMLTextAreaElement)) => {
     setFormData({
@@ -31,10 +28,9 @@ const CreateCustomer = () => {
     })
   }
 
-  const handleSubmit = (event: { preventDefault: () => void }) => {
+  const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
-    dispatch(addCustomer({
-      id: uuid(),
+    await dispatch(createCustomer({
       name: formData.name,
       document: formData.document,
       phone: formData.phone,
