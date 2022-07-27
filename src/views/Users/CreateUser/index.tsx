@@ -1,18 +1,16 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch } from 'react-redux';
 import { Link } from "react-router-dom"
 
-import { v4 as uuid } from 'uuid'
-
-import { Button, TextField, Typography, Box, Grid, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton } from "@mui/material"
+import { Button, TextField, Typography, Box, Grid, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton, Autocomplete } from "@mui/material"
 import SaveIcon from '@mui/icons-material/Save'
 import { Visibility, VisibilityOff } from "@mui/icons-material"
 
 import MiniDrawer from "../../../components/MiniDrawer"
-import { addUser } from "../../../store/reducers/users";
+import { createUser } from "../../../store/reducers/users/handlers/createUser";
+import { getAllEmployees } from "../../../store/reducers/employees/handlers/getAllEmployees";
 
 const emptyFormData = {
-  id: '',
   employee: '',
   user: '',
   password: '',
@@ -20,9 +18,9 @@ const emptyFormData = {
 }
 
 const CreateUser = () => {
-
   const [formData, setFormData] = useState(emptyFormData)
-  const dispatch = useDispatch()
+  const [employees, setEmployees] = useState<any>([])
+  const dispatch = useDispatch<any>()
 
   const [isShowPassword, setIsShowPassword] = useState(false)
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false)
@@ -31,6 +29,13 @@ const CreateUser = () => {
     setFormData({
       ...formData,
       [target.name]: target.value
+    })
+  }
+
+  const handleChangeEmployee = (_e: any, value: { id: string; }) => {
+    setFormData({
+      ...formData,
+      employee: value?.id
     })
   }
 
@@ -43,14 +48,23 @@ const CreateUser = () => {
 
     if (invalidPassword()) return alert('Os campos de senhas estão divergentes')
 
-    dispatch(addUser({
-      id: uuid(),
-      employee: formData.employee,
+    dispatch(createUser({
+      employee_id: formData.employee,
       user: formData.user,
       password: formData.password,
     }))
+
     setFormData(emptyFormData)
   }
+
+  useEffect(() => {
+    const getEmployees = async () => {
+      const response = await dispatch(getAllEmployees())
+      setEmployees(response?.payload)
+      return response;
+    }
+    getEmployees()
+  }, [dispatch])
 
   return (
     <MiniDrawer title="Cadastrar Usuário">
@@ -60,17 +74,16 @@ const CreateUser = () => {
 
       <Box my={3}>
         <form onSubmit={handleSubmit}>
-
           <Grid container spacing={3}>
             <Grid xs={12} sm={6} item>
-              <TextField
-                id='employee'
-                name='employee'
-                label='Funcionário'
-                variant='outlined'
-                value={formData.employee}
-                onChange={({ target: value }) => handleChange(value)}
+              <Autocomplete
+                disablePortal
                 fullWidth
+                id='employee'
+                options={employees}
+                getOptionLabel={(option: any) => option.name}
+                onChange={(e, value) => handleChangeEmployee(e, value)}
+                renderInput={(params) => <TextField {...params} label="Funcionário" />}
               />
             </Grid>
 
