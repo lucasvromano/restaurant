@@ -2,11 +2,13 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import customers from './reducers/customers/index'
 import employees from './reducers/employees/index'
 import users from './reducers/users/index'
+import schedules from './reducers/schedules/index'
 
 const reducer = combineReducers({
   customers,
   employees,
   users,
+  schedules
 })
 
 const store = configureStore({

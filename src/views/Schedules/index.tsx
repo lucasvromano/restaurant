@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { DataGrid, GridColDef, ptBR } from '@mui/x-data-grid';
@@ -9,14 +9,10 @@ import AddIcon from '@mui/icons-material/Add';
 import { Box } from '@mui/system';
 
 import MiniDrawer from '../../components/MiniDrawer'
-import { RootState } from '../../store';
+import { useEffect, useState } from 'react';
+import { getAllSchedules } from '../../store/reducers/schedules/handler/getAllSchedules';
 
 const columns: GridColDef[] = [
-  // {
-  //   field: 'id',
-  //   headerName: 'ID',
-  //   width: 150
-  // },
   {
     field: 'customer',
     headerName: 'Cliente',
@@ -28,7 +24,7 @@ const columns: GridColDef[] = [
     width: 200,
   },
   {
-    field: 'services',
+    field: 'service',
     headerName: 'Atendimento',
     width: 330,
   },
@@ -69,8 +65,28 @@ const columns: GridColDef[] = [
 ];
 
 const Schedules = () => {
+  const dispatch = useDispatch<any>();
+  const [schedules, setSchedules] = useState([])
 
-  const schedules = useSelector((state: RootState) => state.schedules);
+  useEffect(() => {
+    const getSchedules = async () => {
+      const response = await dispatch(getAllSchedules())
+
+      const scheduleList = response?.payload.map((item: any) => ({
+        id: item.id,
+        customer: item.customer.name,
+        employee: item.employee.name,
+        service: item.service.service,
+        price: item.service.price,
+        date: item.date,
+        user: item.user
+      }))
+
+      setSchedules(scheduleList)
+      return response;
+    }
+    getSchedules()
+  }, [dispatch])
 
   return (
     <>
