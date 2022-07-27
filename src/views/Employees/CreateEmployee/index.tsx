@@ -1,17 +1,14 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { useDispatch } from "react-redux"
-import { v4 as uuid } from 'uuid'
 
 import { Button, TextField, Typography, Box, Grid } from "@mui/material"
 import SaveIcon from '@mui/icons-material/Save'
 
 import MiniDrawer from "../../../components/MiniDrawer"
-import { addEmployee } from "../../../store/reducers/employees"
-
+import { createEmployee } from "../../../store/reducers/employees/handlers/createEmployee"
 
 const emptyFormData = {
-  id: '',
   name: '',
   document: '',
   phone: '',
@@ -23,7 +20,7 @@ const emptyFormData = {
 const CreateEmployee = () => {
 
   const [formData, setFormData] = useState(emptyFormData)
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<any>()
 
   const handleChange = (target: EventTarget & (HTMLInputElement | HTMLTextAreaElement)) => {
     setFormData({
@@ -32,15 +29,14 @@ const CreateEmployee = () => {
     })
   }
 
-  const handleSubmit = (event: { preventDefault: () => void }) => {
+  const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
-    dispatch(addEmployee({
-      id: uuid(),
+    await dispatch(createEmployee({
       name: formData.name,
       document: formData.document,
       phone: formData.phone,
       email: formData.email,
-      salary: formData.salary,
+      salary: parseFloat(formData.salary),
       birthday: formData.birthday,
     }))
     setFormData(emptyFormData)
