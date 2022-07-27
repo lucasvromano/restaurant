@@ -15,6 +15,8 @@ import Employees from "./Employees";
 import CreateEmployee from "./Employees/CreateEmployee";
 import Customers from "./Customers";
 import CreateCustomer from "./Customers/CreateCustomer";
+import Services from "./Services";
+import CreateService from "./Services/CreateService";
 
 const App = () => (
   <>
@@ -34,6 +36,9 @@ const App = () => (
 
         <Route path="/clientes" element={<Customers />} />
         <Route path="/clientes/cadastrar" element={<CreateCustomer />} />
+
+        <Route path="/atendimentos" element={<Services />} />
+        <Route path="/atendimentos/cadastrar" element={<CreateService />} />
       </Routes>
     </Router>
   </>
