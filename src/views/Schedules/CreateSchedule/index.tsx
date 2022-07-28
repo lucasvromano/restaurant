@@ -1,28 +1,31 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useDispatch } from 'react-redux';
 import { Link } from "react-router-dom"
 
-import { v4 as uuid } from 'uuid'
-
-import { Button, TextField, Typography, Box, Grid } from "@mui/material"
+import { Button, TextField, Typography, Box, Grid, Autocomplete } from "@mui/material"
 import SaveIcon from '@mui/icons-material/Save'
 import MiniDrawer from "../../../components/MiniDrawer"
-
-import { addSchedules } from "../../../store/reducers/schedules";
+import { getAllCustomers } from "../../../store/reducers/customers/handlers/getAllCustomers";
+import { createCustomer } from "../../../store/reducers/customers/handlers/createCustomer";
+import { getAllEmployees } from "../../../store/reducers/employees/handlers/getAllEmployees";
+import { getAllServices } from "../../../store/reducers/services/handlers/getAllServices";
 
 const emptyFormData = {
-  id: '',
   customer: '',
   employee: '',
-  services: '',
+  services: [''],
   price: '',
   date: '',
 }
 
+
 const CreateService = () => {
 
-  const [formData, setFormData] = useState(emptyFormData)
-  const dispatch = useDispatch()
+  const [formData, setFormData] = useState(emptyFormData);
+  const [customers, setCustomers] = useState([]);
+  const [employees, setEmployees] = useState([]);
+  const [services, setServices] = useState([]);
+  const dispatch = useDispatch<any>();
 
   const handleChange = (target: EventTarget & (HTMLInputElement | HTMLTextAreaElement)) => {
     setFormData({
@@ -33,8 +36,8 @@ const CreateService = () => {
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault()
-    dispatch(addSchedules({
-      id: uuid(),
+
+    dispatch(createCustomer({
       customer: formData.customer,
       employee: formData.employee,
       services: formData.services,
@@ -43,6 +46,59 @@ const CreateService = () => {
     }))
     setFormData(emptyFormData)
   }
+
+  const handleChangeCustomers = (_e: any, value: { id: string; }) => {
+    setFormData({
+      ...formData,
+      customer: value?.id
+    })
+  }
+
+  const handleChangeEmployees = (_e: any, value: { id: string; }) => {
+    setFormData({
+      ...formData,
+      employee: value?.id
+    })
+  }
+
+  const handleChangeServices = (_e: any, value: any) => {
+    const ids = [''];
+    const prices = [0];
+
+    // corrigir, pois o map espera um return
+    value.map((item: any) => {
+      ids.push(item.id);
+      prices.push(parseFloat(item.price));
+    });
+
+    const sumPrices = prices.reduce((previousValue: any, currentValue: any) => previousValue + currentValue, 0)
+
+    setFormData({
+      ...formData,
+      services: ids,
+      price: sumPrices
+    })
+  }
+
+  useEffect(() => {
+    const getCustomers = async () => {
+      const response = await dispatch(getAllCustomers())
+      setCustomers(response?.payload)
+    }
+    const getEmployee = async () => {
+      const response = await dispatch(getAllEmployees())
+      setEmployees(response?.payload)
+    }
+    const getServices = async () => {
+      const response = await dispatch(getAllServices())
+      setServices(response?.payload)
+    }
+
+    getCustomers();
+    getEmployee();
+    getServices();
+
+  }, [dispatch])
 
   return (
     <MiniDrawer title="Cadastrar Agendamento">
@@ -56,38 +112,43 @@ const CreateService = () => {
           <Grid container spacing={3}>
 
             <Grid xs={12} sm={6} item>
-              <TextField
+              <Autocomplete
+                disablePortal
+                fullWidth
                 id='customer'
-                name='customer'
-                label='Cliente'
-                variant='outlined'
-                value={formData.customer}
-                onChange={({ target: value }) => handleChange(value)}
-                fullWidth
+                options={customers}
+                getOptionLabel={(option: any) => option.name}
+                onChange={(e, value) => handleChangeCustomers(e, value)}
+                renderInput={(params) => <TextField {...params} label="Cliente" />}
               />
             </Grid>
 
             <Grid xs={12} sm={6} item>
-              <TextField
+              <Autocomplete
+                disablePortal
+                fullWidth
                 id='employee'
-                name='employee'
-                label='Funcionário'
-                variant='outlined'
-                value={formData.employee}
-                onChange={({ target: value }) => handleChange(value)}
-                fullWidth
+                options={employees}
+                getOptionLabel={(option: any) => option.name}
+                onChange={(e, value) => handleChangeEmployees(e, value)}
+                renderInput={(params) => <TextField {...params} label="Funcionário" />}
               />
             </Grid>
 
             <Grid xs={12} sm={6} item>
-              <TextField
-                id='services'
-                name='services'
-                label='Atendimento'
-                variant='outlined'
-                value={formData.services}
-                onChange={({ target: value }) => handleChange(value)}
-                fullWidth
+              <Autocomplete
+                multiple
+                id="services"
+                options={services}
+                getOptionLabel={(option: any) => option.service}
+                filterSelectedOptions
+                onChange={(e, value) => handleChangeServices(e, value)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Atendimentos"
+                  />
+                )}
               />
             </Grid>
 
@@ -100,6 +161,7 @@ const CreateService = () => {
                 value={formData.price}
                 onChange={({ target: value }) => handleChange(value)}
                 fullWidth
+                disabled
               />
             </Grid>
 
