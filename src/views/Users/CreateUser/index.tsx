@@ -11,8 +11,11 @@ import { createUser } from "../../../store/reducers/users/handlers/createUser";
 import { getAllEmployees } from "../../../store/reducers/employees/handlers/getAllEmployees";
 
 const emptyFormData = {
-  employee: '',
-  user: '',
+  employee: {
+    id: '',
+    name: ''
+  },
+  userName: '',
   password: '',
   confirmPassword: '',
 }
@@ -32,10 +35,13 @@ const CreateUser = () => {
     })
   }
 
-  const handleChangeEmployee = (_e: any, value: { id: string; }) => {
+  const handleChangeEmployee = (_e: any, value: { id: string; name: string; }) => {
     setFormData({
       ...formData,
-      employee: value?.id
+      employee: {
+        id: value?.id,
+        name: value?.name
+      }
     })
   }
 
@@ -49,9 +55,9 @@ const CreateUser = () => {
     if (invalidPassword()) return alert('Os campos de senhas estão divergentes')
 
     dispatch(createUser({
-      employee_id: formData.employee,
-      user: formData.user,
+      userName: formData.userName,
       password: formData.password,
+      employee: formData.employee
     }))
 
     setFormData(emptyFormData)
@@ -89,11 +95,11 @@ const CreateUser = () => {
 
             <Grid xs={12} sm={6} item>
               <TextField
-                id='user'
-                name='user'
+                id='userName'
+                name='userName'
                 label='Usuário'
                 variant='outlined'
-                value={formData.user}
+                value={formData.userName}
                 onChange={({ target: value }) => handleChange(value)}
                 fullWidth
               />

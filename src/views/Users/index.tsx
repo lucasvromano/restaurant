@@ -18,7 +18,7 @@ const columns: GridColDef[] = [
     width: 500,
   },
   {
-    field: 'user',
+    field: 'userName',
     headerName: 'Usuário',
     width: 300,
   },
@@ -58,7 +58,7 @@ const Users = () => {
       const userList = response?.payload.map((item: any) => ({
         id: item.id,
         employee: item.employee.name,
-        user: item.user
+        userName: item.userName
       }))
 
       setUsers(userList)

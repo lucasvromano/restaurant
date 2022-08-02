@@ -1,16 +1,20 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
+import { addDoc, collection, getFirestore } from 'firebase/firestore';
+import { firebaseApp } from '../../../../firebase/firebaseApp';
 
 export const createCustomer = createAsyncThunk('customers/post', async (payload: any, { rejectWithValue }) => {
   try {
-    const baseUrl = 'http://localhost:3001/customers';
-    const requestOptions = {
-      method: 'POST',
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    }
+    const db = getFirestore(firebaseApp);
+    const userCollectionRef = collection(db, 'customers');
+    
+    await addDoc(userCollectionRef, {
+      name: payload.name,
+      document: payload.document,
+      phone: payload.phone,
+      email: payload.email,
+      birthday: payload.birthday,
+    });
 
-    const fetchResponse = await fetch(baseUrl, requestOptions)
-    return fetchResponse.json()
   } catch (err) {
     console.error(err)
     return rejectWithValue(err)
