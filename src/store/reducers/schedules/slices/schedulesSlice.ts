@@ -1,3 +1,4 @@
+import { createSchedule } from './../handler/createSchedule';
 import { createSlice } from '@reduxjs/toolkit';
 import { getAllSchedules } from '../handler/getAllSchedules';
 
@@ -18,6 +19,22 @@ export const schedulesSlice = createSlice({
 
     builder.addCase(getAllSchedules.fulfilled, (state, action) => {
       state.list = action.payload
+      state.loading = false
+    });
+
+    builder.addCase(getAllSchedules.rejected, (state, action) => {
+      state.loading = false
+    });
+
+    builder.addCase(createSchedule.pending, (state, action) => {
+      state.loading = true
+    });
+
+    builder.addCase(createSchedule.fulfilled, (state, action) => {
+      state.loading = false
+    });
+
+    builder.addCase(createSchedule.rejected, (state, action) => {
       state.loading = false
     });
   }

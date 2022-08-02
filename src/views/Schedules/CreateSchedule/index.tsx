@@ -6,9 +6,9 @@ import { Button, TextField, Typography, Box, Grid, Autocomplete } from "@mui/mat
 import SaveIcon from '@mui/icons-material/Save'
 import MiniDrawer from "../../../components/MiniDrawer"
 import { getAllCustomers } from "../../../store/reducers/customers/handlers/getAllCustomers";
-import { createCustomer } from "../../../store/reducers/customers/handlers/createCustomer";
 import { getAllEmployees } from "../../../store/reducers/employees/handlers/getAllEmployees";
 import { getAllServices } from "../../../store/reducers/services/handlers/getAllServices";
+import { createSchedule } from "../../../store/reducers/schedules/handler/createSchedule";
 
 const emptyFormData = {
   customer: {
@@ -19,8 +19,12 @@ const emptyFormData = {
     id: '',
     name: ''
   },
-  services: [],
-  price: null,
+  services: [{
+    id: '',
+    service: '',
+    price: ''
+  }],
+  price: '',
   date: '',
 }
 
@@ -42,7 +46,7 @@ const CreateService = () => {
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault()
 
-    dispatch(createCustomer({
+    dispatch(createSchedule({
       customer: formData.customer,
       employee: formData.employee,
       services: formData.services,
@@ -73,12 +77,14 @@ const CreateService = () => {
   }
 
   const handleChangeServices = (_e: any, value: any) => {
-    value.map((item: any) => console.log(item.price))
-
     setFormData({
       ...formData,
-      services: value.map((item: any) => item.service),
-      price: value.map((item: any) => item.price).reduce((previousValue: number, currentValue: number) => previousValue + currentValue, 0),
+      services: value?.map((item: any) => ({
+        id: item.id,
+        service: item.service,
+        price: item.price
+      })),
+      price: value?.map((item: any) => item.price).reduce((previousValue: number, currentValue: number) => previousValue + currentValue, 0),
     })
   }
 
@@ -99,7 +105,6 @@ const CreateService = () => {
     getCustomers();
     getEmployee();
     getServices();
-
   }, [dispatch])
 
   return (
