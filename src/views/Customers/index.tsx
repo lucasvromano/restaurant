@@ -14,8 +14,6 @@ import { useDispatch } from 'react-redux';
 import { getAllCustomers } from '../../store/reducers/customers/handlers/getAllCustomers';
 import { deleteCustomer } from '../../store/reducers/customers/handlers/deleteCustomer';
 
-
-
 const Customers = () => {
   const dispatch = useDispatch<any>();
   const [customers, setCustomers] = useState([])
@@ -54,11 +52,16 @@ const Customers = () => {
       filterable: false,
       width: 150,
       renderCell: (e) => {
-  
+
         const handleDelete = async () => {
-          await dispatch(deleteCustomer(e.id))
+          try {
+            await dispatch(deleteCustomer(e.id))
+            setCustomers(customers.filter((customer: { id: string }) => customer.id !== e.id))
+          } catch (err) {
+            console.error(err)
+          }
         }
-  
+
         return (
           <>
             <Button
@@ -73,7 +76,7 @@ const Customers = () => {
           </>
         )
       }
-  
+
     },
   ];
 

@@ -5,7 +5,6 @@ import { firebaseApp } from '../../../../firebase/firebaseApp';
 export const deleteCustomer = createAsyncThunk('customers/delete', async (payload: any, { rejectWithValue }) => {
   try {
     const db = getFirestore(firebaseApp);
-    // const userCollectionRef = collection(db, 'customers');
     const deleteItem = doc(db, 'customers', payload)
     await deleteDoc(deleteItem);
 
