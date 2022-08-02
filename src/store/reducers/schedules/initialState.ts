@@ -4,21 +4,12 @@ export const initialState = {
     customer: [{
       id: '',
       name: '',
-      document: '',
-      phone: '',
-      email: '',
-      birthday: null
     }],
     employee: [{
       id: '',
       name: '',
-      document: '',
-      phone: '',
-      email: '',
-      salary: null,
-      birthday: null
     }],
-    service: [{
+    services: [{
       id: '',
       service: '',
       price: null,

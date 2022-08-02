@@ -24,7 +24,7 @@ const columns: GridColDef[] = [
     width: 200,
   },
   {
-    field: 'service',
+    field: 'services',
     headerName: 'Atendimento',
     width: 330,
   },
@@ -71,15 +71,13 @@ const Schedules = () => {
   useEffect(() => {
     const getSchedules = async () => {
       const response = await dispatch(getAllSchedules())
-
       const scheduleList = response?.payload.map((item: any) => ({
         id: item.id,
         customer: item.customer.name,
         employee: item.employee.name,
-        service: item.service.service,
-        price: item.service.price,
+        services: item.services?.map((service: any) => service.service),
+        price: item.services?.map((service: any) => service.price).reduce((previousValue: number, currentValue: number) => previousValue + currentValue, 0),
         date: item.date,
-        user: item.user
       }))
 
       setSchedules(scheduleList)

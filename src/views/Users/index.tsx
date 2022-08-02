@@ -54,7 +54,6 @@ const Users = () => {
   useEffect(() => {
     const getUsers = async () => {
       const response = await dispatch(getAllUsers())
-
       const userList = response?.payload.map((item: any) => ({
         id: item.id,
         employee: item.employee.name,

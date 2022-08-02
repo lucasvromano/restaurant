@@ -11,13 +11,18 @@ import { getAllEmployees } from "../../../store/reducers/employees/handlers/getA
 import { getAllServices } from "../../../store/reducers/services/handlers/getAllServices";
 
 const emptyFormData = {
-  customer: '',
-  employee: '',
-  services: [''],
-  price: '',
+  customer: {
+    id: '',
+    name: ''
+  },
+  employee: {
+    id: '',
+    name: ''
+  },
+  services: [],
+  price: null,
   date: '',
 }
-
 
 const CreateService = () => {
 
@@ -47,36 +52,33 @@ const CreateService = () => {
     setFormData(emptyFormData)
   }
 
-  const handleChangeCustomers = (_e: any, value: { id: string; }) => {
+  const handleChangeCustomers = (_e: any, value: { id: string; name: string; }) => {
     setFormData({
       ...formData,
-      customer: value?.id
+      customer: {
+        id: value?.id,
+        name: value?.name,
+      }
     })
   }
 
-  const handleChangeEmployees = (_e: any, value: { id: string; }) => {
+  const handleChangeEmployees = (_e: any, value: { id: string; name: string;}) => {
     setFormData({
       ...formData,
-      employee: value?.id
+      employee: {
+        id: value?.id,
+        name: value?.name,
+      }
     })
   }
 
   const handleChangeServices = (_e: any, value: any) => {
-    const ids = [''];
-    const prices = [0];
-
-    // corrigir, pois o map espera um return
-    value.map((item: any) => {
-      ids.push(item.id);
-      prices.push(parseFloat(item.price));
-    });
-
-    const sumPrices = prices.reduce((previousValue: any, currentValue: any) => previousValue + currentValue, 0)
+    value.map((item: any) => console.log(item.price))
 
     setFormData({
       ...formData,
-      services: ids,
-      price: sumPrices
+      services: value.map((item: any) => item.service),
+      price: value.map((item: any) => item.price).reduce((previousValue: number, currentValue: number) => previousValue + currentValue, 0),
     })
   }
 
