@@ -12,62 +12,70 @@ import MiniDrawer from '../../components/MiniDrawer'
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getAllCustomers } from '../../store/reducers/customers/handlers/getAllCustomers';
+import { deleteCustomer } from '../../store/reducers/customers/handlers/deleteCustomer';
 
-const columns: GridColDef[] = [
-  {
-    field: 'name',
-    headerName: 'Nome',
-    width: 200,
-  },
-  {
-    field: 'document',
-    headerName: 'CPF',
-    width: 200,
-  },
-  {
-    field: 'phone',
-    headerName: 'Telefone',
-    width: 330,
-  },
-  {
-    field: 'email',
-    headerName: 'E-mail',
-    width: 90,
-  },
-  {
-    field: 'birthday',
-    headerName: 'Data Nasc.',
-    width: 150,
-  },
-  {
-    field: 'options',
-    headerName: 'Opções',
-    description: 'Opção de edição ou exclusão do cliente.',
-    sortable: false,
-    filterable: false,
-    width: 150,
-    renderCell: (e) => {
-      return (
-        <>
-          <Button
-            onClick={() => alert('Editar: ' + e.id)}>
-            <EditIcon />
-          </Button>
-          <Button
-            color='error'
-            onClick={() => alert('Excluir: ' + e.id)}>
-            <DeleteIcon />
-          </Button>
-        </>
-      )
-    }
 
-  },
-];
 
 const Customers = () => {
   const dispatch = useDispatch<any>();
   const [customers, setCustomers] = useState([])
+
+  const columns: GridColDef[] = [
+    {
+      field: 'name',
+      headerName: 'Nome',
+      width: 200,
+    },
+    {
+      field: 'document',
+      headerName: 'CPF',
+      width: 200,
+    },
+    {
+      field: 'phone',
+      headerName: 'Telefone',
+      width: 330,
+    },
+    {
+      field: 'email',
+      headerName: 'E-mail',
+      width: 90,
+    },
+    {
+      field: 'birthday',
+      headerName: 'Data Nasc.',
+      width: 150,
+    },
+    {
+      field: 'options',
+      headerName: 'Opções',
+      description: 'Opção de edição ou exclusão do cliente.',
+      sortable: false,
+      filterable: false,
+      width: 150,
+      renderCell: (e) => {
+  
+        const handleDelete = async () => {
+          await dispatch(deleteCustomer(e.id))
+        }
+  
+        return (
+          <>
+            <Button
+              onClick={() => alert('Editar: ' + e.id)}>
+              <EditIcon />
+            </Button>
+            <Button
+              color='error'
+              onClick={handleDelete}>
+              <DeleteIcon />
+            </Button>
+          </>
+        )
+      }
+  
+    },
+  ];
 
   useEffect(() => {
     const getCustomers = async () => {

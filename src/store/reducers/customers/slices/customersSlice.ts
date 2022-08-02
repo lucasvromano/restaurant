@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { initialState } from '../initialState';
 import { getAllCustomers } from '../handlers/getAllCustomers';
 import { createCustomer } from '../handlers/createCustomer';
+import { deleteCustomer } from '../handlers/deleteCustomer';
 
 export const customersSlice = createSlice({
   name: 'customersSlice',
@@ -35,6 +36,18 @@ export const customersSlice = createSlice({
     });
 
     builder.addCase(createCustomer.rejected, (state, action) => {
+      state.loading = false
+    });
+
+    builder.addCase(deleteCustomer.pending, (state, action) => {
+      state.loading = true
+    });
+
+    builder.addCase(deleteCustomer.fulfilled, (state, action) => {
+      state.loading = false
+    });
+
+    builder.addCase(deleteCustomer.rejected, (state, action) => {
       state.loading = false
     });
   }
