@@ -4,6 +4,7 @@ import { initialState } from '../initialState';
 import { getAllEmployees } from '../handlers/getAllEmployees';
 import { createEmployee } from '../handlers/createEmployee';
 import { deleteEmployee } from '../handlers/deleteEmployee';
+import { getEmployeeById } from '../handlers/getEmployeeById';
 
 export const employeesSlice = createSlice({
   name: 'employeesSlice',
@@ -48,6 +49,18 @@ export const employeesSlice = createSlice({
     });
 
     builder.addCase(deleteEmployee.rejected, (state, action) => {
+      state.loading = false
+    });
+
+    builder.addCase(getEmployeeById.pending, (state, action) => {
+      state.loading = true
+    });
+
+    builder.addCase(getEmployeeById.fulfilled, (state, action) => {
+      state.loading = false
+    });
+
+    builder.addCase(getEmployeeById.rejected, (state, action) => {
       state.loading = false
     });
   }

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { Box, Button, Stack, Typography } from "@mui/material"
 import { DataGrid, GridColDef, ptBR } from "@mui/x-data-grid"
@@ -66,10 +66,12 @@ const Employees = () => {
 
         return (
           <>
-            <Button
-              onClick={() => alert('Editar: ' + e.id)}>
-              <EditIcon />
-            </Button>
+            <Link to={`/funcionarios/atualizar/${e.id}`}>
+              <Button>
+                <EditIcon />
+              </Button>
+            </Link>
+
             <Button
               color='error'
               onClick={handleDelete}>
@@ -88,7 +90,7 @@ const Employees = () => {
       return response;
     }
     getEmployees()
-  }, [])
+  }, [dispatch])
 
   return (
     <MiniDrawer title="Funcionários">

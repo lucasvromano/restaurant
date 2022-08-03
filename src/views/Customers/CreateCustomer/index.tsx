@@ -34,7 +34,7 @@ const CreateCustomer = () => {
 
     isEdit && getCustomer();
 
-  }, []);
+  }, [dispatch, id, isEdit]);
 
   const handleChange = (target: EventTarget & (HTMLInputElement | HTMLTextAreaElement)) => {
     setFormData({

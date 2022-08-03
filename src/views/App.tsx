@@ -33,6 +33,7 @@ const App = () => (
 
         <Route path="/funcionarios" element={<Employees />} />
         <Route path="/funcionarios/cadastrar" element={<CreateEmployee />} />
+        <Route path="/funcionarios/atualizar/:id" element={<CreateEmployee />} />
 
         <Route path="/clientes" element={<Customers />} />
         <Route path="/clientes/cadastrar" element={<CreateCustomer />} />

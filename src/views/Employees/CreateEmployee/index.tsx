@@ -1,12 +1,15 @@
-import { useState } from "react"
-import { Link } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { Link, useParams } from "react-router-dom"
 import { useDispatch } from "react-redux"
 
 import { Button, TextField, Typography, Box, Grid } from "@mui/material"
 import SaveIcon from '@mui/icons-material/Save'
+import EditIcon from '@mui/icons-material/Edit'
 
 import MiniDrawer from "../../../components/MiniDrawer"
 import { createEmployee } from "../../../store/reducers/employees/handlers/createEmployee"
+import { getEmployeeById } from "../../../store/reducers/employees/handlers/getEmployeeById"
+import { updateEmployee } from "../../../store/reducers/employees/handlers/updateEmployee"
 
 const emptyFormData = {
   name: '',
@@ -20,7 +23,19 @@ const emptyFormData = {
 const CreateEmployee = () => {
 
   const [formData, setFormData] = useState(emptyFormData)
-  const dispatch = useDispatch<any>()
+  const dispatch = useDispatch<any>();
+  const { id } = useParams();
+  const isEdit = id !== undefined;
+
+  useEffect(() => {
+    const getEmployee = async () => {
+      const employee = await dispatch(getEmployeeById(id));
+      setFormData(employee.payload);
+    }
+
+    isEdit && getEmployee();
+
+  }, [dispatch, id, isEdit]);
 
   const handleChange = (target: EventTarget & (HTMLInputElement | HTMLTextAreaElement)) => {
     setFormData({
@@ -30,16 +45,25 @@ const CreateEmployee = () => {
   }
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
-    event.preventDefault()
-    await dispatch(createEmployee({
+    event.preventDefault();
+
+    const request = {
       name: formData.name,
       document: formData.document,
       phone: formData.phone,
       email: formData.email,
       salary: parseFloat(formData.salary),
       birthday: formData.birthday,
-    }))
-    setFormData(emptyFormData)
+    }
+
+    if (isEdit) {
+      await dispatch(updateEmployee({ ...request, id: id }));
+      return alert('Registro alterado com sucesso!');
+    }
+
+    await dispatch(createEmployee(request));
+    setFormData(emptyFormData);
+    alert('Registro criado com sucesso!');
   }
 
   return (
@@ -140,11 +164,11 @@ const CreateEmployee = () => {
             </Link>
 
             <Button
-              startIcon={<SaveIcon />}
+              startIcon={isEdit ? <EditIcon /> : <SaveIcon />}
               variant='contained'
               color='success'
               type="submit">
-              Salvar
+              {isEdit ? 'Editar' : 'Salvar'}
             </Button>
           </Box>
 
