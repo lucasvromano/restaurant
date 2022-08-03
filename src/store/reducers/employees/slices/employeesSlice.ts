@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { initialState } from '../initialState';
 import { getAllEmployees } from '../handlers/getAllEmployees';
 import { createEmployee } from '../handlers/createEmployee';
+import { deleteEmployee } from '../handlers/deleteEmployee';
 
 export const employeesSlice = createSlice({
   name: 'employeesSlice',
@@ -35,6 +36,18 @@ export const employeesSlice = createSlice({
     });
 
     builder.addCase(createEmployee.rejected, (state, action) => {
+      state.loading = false
+    });
+
+    builder.addCase(deleteEmployee.pending, (state, action) => {
+      state.loading = true
+    });
+
+    builder.addCase(deleteEmployee.fulfilled, (state, action) => {
+      state.loading = false
+    });
+
+    builder.addCase(deleteEmployee.rejected, (state, action) => {
       state.loading = false
     });
   }

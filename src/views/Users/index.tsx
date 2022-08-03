@@ -10,46 +10,56 @@ import AddIcon from '@mui/icons-material/Add';
 import MiniDrawer from "../../components/MiniDrawer"
 import { useEffect, useState } from "react";
 import { getAllUsers } from "../../store/reducers/users/handlers/getAllUsers";
-
-const columns: GridColDef[] = [
-  {
-    field: 'employee',
-    headerName: 'Funcionário',
-    width: 500,
-  },
-  {
-    field: 'userName',
-    headerName: 'Usuário',
-    width: 300,
-  },
-  {
-    field: 'options',
-    headerName: 'Opções',
-    description: 'Opção de edição ou exclusão do agendamento.',
-    sortable: false,
-    filterable: false,
-    width: 150,
-    renderCell: (e) => {
-      return (
-        <>
-          <Button
-            onClick={() => alert('Editar: ' + e.id)}>
-            <EditIcon />
-          </Button>
-          <Button
-            color='error'
-            onClick={() => alert('Excluir: ' + e.id)}>
-            <DeleteIcon />
-          </Button>
-        </>
-      )
-    }
-  },
-];
+import { deleteUser } from "../../store/reducers/users/handlers/deleteUser";
 
 const Users = () => {
   const dispatch = useDispatch<any>();
-  const [users, setUsers] = useState([])
+  const [users, setUsers] = useState([]);
+
+  const columns: GridColDef[] = [
+    {
+      field: 'employee',
+      headerName: 'Funcionário',
+      width: 500,
+    },
+    {
+      field: 'userName',
+      headerName: 'Usuário',
+      width: 300,
+    },
+    {
+      field: 'options',
+      headerName: 'Opções',
+      description: 'Opção de edição ou exclusão do agendamento.',
+      sortable: false,
+      filterable: false,
+      width: 150,
+      renderCell: (e) => {
+        const handleDelete = async () => {
+          try {
+            await dispatch(deleteUser(e.id))
+            setUsers(users.filter((user: { id: string }) => user.id !== e.id))
+          } catch (err) {
+            console.error(err)
+          }
+        }
+
+        return (
+          <>
+            <Button
+              onClick={() => alert('Editar: ' + e.id)}>
+              <EditIcon />
+            </Button>
+            <Button
+              color='error'
+              onClick={handleDelete}>
+              <DeleteIcon />
+            </Button>
+          </>
+        )
+      }
+    },
+  ];
 
   useEffect(() => {
     const getUsers = async () => {

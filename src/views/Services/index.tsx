@@ -10,46 +10,56 @@ import AddIcon from '@mui/icons-material/Add';
 import MiniDrawer from "../../components/MiniDrawer"
 import { useEffect, useState } from "react";
 import { getAllServices } from "../../store/reducers/services/handlers/getAllServices";
-
-const columns: GridColDef[] = [
-  {
-    field: 'service',
-    headerName: 'Atendimento',
-    width: 500,
-  },
-  {
-    field: 'price',
-    headerName: 'Preço',
-    width: 300,
-  },
-  {
-    field: 'options',
-    headerName: 'Opções',
-    description: 'Opção de edição ou exclusão do atendimento.',
-    sortable: false,
-    filterable: false,
-    width: 150,
-    renderCell: (e) => {
-      return (
-        <>
-          <Button
-            onClick={() => alert('Editar: ' + e.id)}>
-            <EditIcon />
-          </Button>
-          <Button
-            color='error'
-            onClick={() => alert('Excluir: ' + e.id)}>
-            <DeleteIcon />
-          </Button>
-        </>
-      )
-    }
-  },
-];
+import { deleteService } from "../../store/reducers/services/handlers/deleteService";
 
 const Services = () => {
   const dispatch = useDispatch<any>();
-  const [services, setServices] = useState([])
+  const [services, setServices] = useState([]);
+
+  const columns: GridColDef[] = [
+    {
+      field: 'service',
+      headerName: 'Atendimento',
+      width: 500,
+    },
+    {
+      field: 'price',
+      headerName: 'Preço',
+      width: 300,
+    },
+    {
+      field: 'options',
+      headerName: 'Opções',
+      description: 'Opção de edição ou exclusão do atendimento.',
+      sortable: false,
+      filterable: false,
+      width: 150,
+      renderCell: (e) => {
+        const handleDelete = async () => {
+          try {
+            await dispatch(deleteService(e.id))
+            setServices(services.filter((service: { id: string }) => service.id !== e.id))
+          } catch (err) {
+            console.error(err)
+          }
+        }
+
+        return (
+          <>
+            <Button
+              onClick={() => alert('Editar: ' + e.id)}>
+              <EditIcon />
+            </Button>
+            <Button
+              color='error'
+              onClick={handleDelete}>
+              <DeleteIcon />
+            </Button>
+          </>
+        )
+      }
+    },
+  ];
 
   useEffect(() => {
     const getServices = async () => {

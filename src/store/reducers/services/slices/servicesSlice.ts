@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createService } from '../handlers/createService';
+import { deleteService } from '../handlers/deleteService';
 import { getAllServices } from '../handlers/getAllServices';
 
 import { initialState } from '../initialState';
@@ -35,6 +36,18 @@ export const servicesSlice = createSlice({
     });
 
     builder.addCase(createService.rejected, (state, action) => {
+      state.loading = false
+    });
+
+    builder.addCase(deleteService.pending, (state, action) => {
+      state.loading = true
+    });
+
+    builder.addCase(deleteService.fulfilled, (state, action) => {
+      state.loading = false
+    });
+
+    builder.addCase(deleteService.rejected, (state, action) => {
       state.loading = false
     });
 

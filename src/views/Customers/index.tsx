@@ -52,7 +52,6 @@ const Customers = () => {
       filterable: false,
       width: 150,
       renderCell: (e) => {
-
         const handleDelete = async () => {
           try {
             await dispatch(deleteCustomer(e.id))
