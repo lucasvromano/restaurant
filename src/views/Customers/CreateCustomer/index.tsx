@@ -1,12 +1,15 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch } from 'react-redux';
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 
 import { Button, TextField, Typography, Box, Grid } from "@mui/material"
-import SaveIcon from '@mui/icons-material/Save'
+import SaveIcon from '@mui/icons-material/Save';
+import EditIcon from '@mui/icons-material/Edit';
 import MiniDrawer from "../../../components/MiniDrawer"
 
 import { createCustomer } from "../../../store/reducers/customers/handlers/createCustomer";
+import { getCustomerById } from "../../../store/reducers/customers/handlers/getCustomerById";
+import { updateCustomer } from "../../../store/reducers/customers/handlers/updateCustomer";
 
 const emptyFormData = {
   name: '',
@@ -18,8 +21,20 @@ const emptyFormData = {
 
 const CreateCustomer = () => {
 
-  const [formData, setFormData] = useState(emptyFormData)
-  const dispatch = useDispatch<any>()
+  const [formData, setFormData] = useState(emptyFormData);
+  const dispatch = useDispatch<any>();
+  const { id } = useParams();
+  const isEdit = id !== undefined;
+
+  useEffect(() => {
+    const getCustomer = async () => {
+      const customer = await dispatch(getCustomerById(id));
+      setFormData(customer.payload);
+    }
+
+    isEdit && getCustomer();
+
+  }, []);
 
   const handleChange = (target: EventTarget & (HTMLInputElement | HTMLTextAreaElement)) => {
     setFormData({
@@ -29,15 +44,24 @@ const CreateCustomer = () => {
   }
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
-    event.preventDefault()
-    await dispatch(createCustomer({
+    event.preventDefault();
+
+    const request = {
       name: formData.name,
       document: formData.document,
       phone: formData.phone,
       email: formData.email,
       birthday: formData.birthday,
-    }))
-    setFormData(emptyFormData)
+    }
+
+    if (isEdit) {
+      await dispatch(updateCustomer({ ...request, id: id }));
+      return alert('Registro alterado com sucesso!');
+    }
+
+    await dispatch(createCustomer(request));
+    setFormData(emptyFormData);
+    alert('Registro criado com sucesso!');
   }
 
   return (
@@ -126,17 +150,17 @@ const CreateCustomer = () => {
             </Link>
 
             <Button
-              startIcon={<SaveIcon />}
+              startIcon={isEdit ? <EditIcon /> : <SaveIcon />}
               variant='contained'
               color='success'
               type="submit">
-              Salvar
+              {isEdit ? 'Editar' : 'Salvar'}
             </Button>
           </Box>
 
         </form>
-      </Box>
-    </MiniDrawer>
+      </Box >
+    </MiniDrawer >
   )
 }
 

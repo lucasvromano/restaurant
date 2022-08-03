@@ -1,3 +1,5 @@
+import { updateCustomer } from './../handlers/updateCustomer';
+import { getCustomerById } from './../handlers/getCustomerById';
 import { createSlice } from '@reduxjs/toolkit';
 
 import { initialState } from '../initialState';
@@ -48,6 +50,30 @@ export const customersSlice = createSlice({
     });
 
     builder.addCase(deleteCustomer.rejected, (state, action) => {
+      state.loading = false
+    });
+
+    builder.addCase(getCustomerById.pending, (state, action) => {
+      state.loading = true
+    });
+
+    builder.addCase(getCustomerById.fulfilled, (state, action) => {
+      state.loading = false
+    });
+
+    builder.addCase(getCustomerById.rejected, (state, action) => {
+      state.loading = false
+    });
+
+    builder.addCase(updateCustomer.pending, (state, action) => {
+      state.loading = true
+    });
+
+    builder.addCase(updateCustomer.fulfilled, (state, action) => {
+      state.loading = false
+    });
+
+    builder.addCase(updateCustomer.rejected, (state, action) => {
       state.loading = false
     });
   }

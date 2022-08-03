@@ -63,10 +63,12 @@ const Customers = () => {
 
         return (
           <>
-            <Button
-              onClick={() => alert('Editar: ' + e.id)}>
-              <EditIcon />
-            </Button>
+            <Link to={`/clientes/atualizar/${e.id}`}>
+              <Button>
+                <EditIcon />
+              </Button>
+            </Link>
+
             <Button
               color='error'
               onClick={handleDelete}>
