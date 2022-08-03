@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { getAllSchedules } from '../handler/getAllSchedules';
 
 import { initialState } from '../initialState';
+import { deleteSchedule } from '../handler/deleteSchedule';
 
 export const schedulesSlice = createSlice({
   name: 'schedulesSlice',
@@ -35,6 +36,18 @@ export const schedulesSlice = createSlice({
     });
 
     builder.addCase(createSchedule.rejected, (state, action) => {
+      state.loading = false
+    });
+
+    builder.addCase(deleteSchedule.pending, (state, action) => {
+      state.loading = true
+    });
+
+    builder.addCase(deleteSchedule.fulfilled, (state, action) => {
+      state.loading = false
+    });
+
+    builder.addCase(deleteSchedule.rejected, (state, action) => {
       state.loading = false
     });
   }

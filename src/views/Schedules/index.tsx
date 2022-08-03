@@ -11,62 +11,71 @@ import { Box } from '@mui/system';
 import MiniDrawer from '../../components/MiniDrawer'
 import { useEffect, useState } from 'react';
 import { getAllSchedules } from '../../store/reducers/schedules/handler/getAllSchedules';
-
-const columns: GridColDef[] = [
-  {
-    field: 'customer',
-    headerName: 'Cliente',
-    width: 200,
-  },
-  {
-    field: 'employee',
-    headerName: 'Funcionário',
-    width: 200,
-  },
-  {
-    field: 'services',
-    headerName: 'Atendimento',
-    width: 330,
-  },
-  {
-    field: 'price',
-    headerName: 'Valor',
-    width: 90,
-  },
-  {
-    field: 'date',
-    headerName: 'Data/Hora',
-    width: 150,
-  },
-  {
-    field: 'options',
-    headerName: 'Opções',
-    description: 'Opção de edição ou exclusão do agendamento.',
-    sortable: false,
-    filterable: false,
-    width: 150,
-    renderCell: (e) => {
-      return (
-        <>
-          <Button
-            onClick={() => alert('Editar: ' + e.id)}>
-            <EditIcon />
-          </Button>
-          <Button
-            color='error'
-            onClick={() => alert('Excluir: ' + e.id)}>
-            <DeleteIcon />
-          </Button>
-        </>
-      )
-    }
-
-  },
-];
+import { deleteSchedule } from '../../store/reducers/schedules/handler/deleteSchedule';
 
 const Schedules = () => {
   const dispatch = useDispatch<any>();
-  const [schedules, setSchedules] = useState([])
+  const [schedules, setSchedules] = useState([]);
+
+  const columns: GridColDef[] = [
+    {
+      field: 'customer',
+      headerName: 'Cliente',
+      width: 200,
+    },
+    {
+      field: 'employee',
+      headerName: 'Funcionário',
+      width: 200,
+    },
+    {
+      field: 'services',
+      headerName: 'Atendimento',
+      width: 330,
+    },
+    {
+      field: 'price',
+      headerName: 'Valor',
+      width: 90,
+    },
+    {
+      field: 'date',
+      headerName: 'Data/Hora',
+      width: 150,
+    },
+    {
+      field: 'options',
+      headerName: 'Opções',
+      description: 'Opção de edição ou exclusão do agendamento.',
+      sortable: false,
+      filterable: false,
+      width: 150,
+      renderCell: (e) => {
+        const handleDelete = async () => {
+          try {
+            await dispatch(deleteSchedule(e.id))
+            setSchedules(schedules.filter((schedule: { id: string }) => schedule.id !== e.id))
+          } catch (err) {
+            console.error(err)
+          }
+        }
+
+        return (
+          <>
+            <Button
+              onClick={() => alert('Editar: ' + e.id)}>
+              <EditIcon />
+            </Button>
+            <Button
+              color='error'
+              onClick={handleDelete}>
+              <DeleteIcon />
+            </Button>
+          </>
+        )
+      }
+    },
+  ];
 
   useEffect(() => {
     const getSchedules = async () => {
