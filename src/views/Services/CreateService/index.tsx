@@ -1,11 +1,15 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch } from 'react-redux';
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 
 import { Button, TextField, Typography, Box, Grid } from "@mui/material"
 import SaveIcon from '@mui/icons-material/Save'
+import EditIcon from '@mui/icons-material/Edit'
+
 import MiniDrawer from "../../../components/MiniDrawer"
 import { createService } from "../../../store/reducers/services/handlers/createService";
+import { getServiceById } from "../../../store/reducers/services/handlers/getServiceById";
+import { updateService } from "../../../store/reducers/services/handlers/updateService";
 
 const emptyFormData = {
   service: '',
@@ -14,8 +18,20 @@ const emptyFormData = {
 
 const CreateService = () => {
 
-  const [formData, setFormData] = useState(emptyFormData)
-  const dispatch = useDispatch<any>()
+  const [formData, setFormData] = useState(emptyFormData);
+  const dispatch = useDispatch<any>();
+  const { id } = useParams();
+  const isEdit = id !== undefined;
+
+  useEffect(() => {
+    const getService = async () => {
+      const service = await dispatch(getServiceById(id));
+      setFormData(service.payload);
+    }
+
+    isEdit && getService();
+
+  }, [dispatch, id, isEdit]);
 
   const handleChange = (target: EventTarget & (HTMLInputElement | HTMLTextAreaElement)) => {
     setFormData({
@@ -26,11 +42,20 @@ const CreateService = () => {
 
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
-    await dispatch(createService({
+
+    const request = {
       service: formData.service,
       price: formData.price
-    }))
-    setFormData(emptyFormData)
+    }
+
+    if (isEdit) {
+      await dispatch(updateService({ ...request, id: id }));
+      return alert('Registro alterado com sucesso!');
+    }
+
+    await dispatch(createService(request));
+    setFormData(emptyFormData);
+    alert('Registro criado com sucesso!');
   }
 
   return (
@@ -83,11 +108,11 @@ const CreateService = () => {
             </Link>
 
             <Button
-              startIcon={<SaveIcon />}
+              startIcon={isEdit ? <EditIcon /> : <SaveIcon />}
               variant='contained'
               color='success'
               type="submit">
-              Salvar
+              {isEdit ? 'Editar' : 'Salvar'}
             </Button>
           </Box>
 

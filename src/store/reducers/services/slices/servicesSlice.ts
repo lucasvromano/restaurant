@@ -1,9 +1,11 @@
+import { getServiceById } from './../handlers/getServiceById';
 import { createSlice } from '@reduxjs/toolkit';
 import { createService } from '../handlers/createService';
 import { deleteService } from '../handlers/deleteService';
 import { getAllServices } from '../handlers/getAllServices';
 
 import { initialState } from '../initialState';
+import { updateService } from '../handlers/updateService';
 
 export const servicesSlice = createSlice({
   name: 'servicesSlice',
@@ -48,6 +50,30 @@ export const servicesSlice = createSlice({
     });
 
     builder.addCase(deleteService.rejected, (state, action) => {
+      state.loading = false
+    });
+
+    builder.addCase(getServiceById.pending, (state, action) => {
+      state.loading = true
+    });
+
+    builder.addCase(getServiceById.fulfilled, (state, action) => {
+      state.loading = false
+    });
+
+    builder.addCase(getServiceById.rejected, (state, action) => {
+      state.loading = false
+    });
+
+    builder.addCase(updateService.pending, (state, action) => {
+      state.loading = true
+    });
+
+    builder.addCase(updateService.fulfilled, (state, action) => {
+      state.loading = false
+    });
+
+    builder.addCase(updateService.rejected, (state, action) => {
       state.loading = false
     });
 
