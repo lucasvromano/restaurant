@@ -27,9 +27,11 @@ const App = () => (
 
         <Route path="/agendamentos" element={<Schedules />} />
         <Route path="/agendamentos/cadastrar" element={<CreateSchedule />} />
+        <Route path="/agendamentos/atualizar/:id" element={<CreateSchedule />} />
 
         <Route path="/usuarios" element={<Users />} />
         <Route path="/usuarios/cadastrar" element={<CreateUser />} />
+        <Route path="/usuarios/atualizar/:id" element={<CreateUser />} />
 
         <Route path="/funcionarios" element={<Employees />} />
         <Route path="/funcionarios/cadastrar" element={<CreateEmployee />} />
@@ -41,6 +43,7 @@ const App = () => (
 
         <Route path="/atendimentos" element={<Services />} />
         <Route path="/atendimentos/cadastrar" element={<CreateService />} />
+        <Route path="/atendimentos/atualizar/:id" element={<CreateService />} />
       </Routes>
     </Router>
   </>

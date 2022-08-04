@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react"
 import { useDispatch } from 'react-redux';
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 
 import { Button, TextField, Typography, Box, Grid, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton, Autocomplete } from "@mui/material"
 import SaveIcon from '@mui/icons-material/Save'
+import EditIcon from '@mui/icons-material/Edit'
 import { Visibility, VisibilityOff } from "@mui/icons-material"
 
 import MiniDrawer from "../../../components/MiniDrawer"
 import { createUser } from "../../../store/reducers/users/handlers/createUser";
 import { getAllEmployees } from "../../../store/reducers/employees/handlers/getAllEmployees";
+import { updateUser } from "../../../store/reducers/users/handlers/updateUser";
+import { getUserById } from "../../../store/reducers/users/handlers/getUserById";
 
 const emptyFormData = {
   employee: {
@@ -23,10 +26,29 @@ const emptyFormData = {
 const CreateUser = () => {
   const [formData, setFormData] = useState(emptyFormData)
   const [employees, setEmployees] = useState<any>([])
-  const dispatch = useDispatch<any>()
+  const dispatch = useDispatch<any>();
+  const { id } = useParams();
+  const isEdit = id !== undefined;
 
   const [isShowPassword, setIsShowPassword] = useState(false)
   const [isShowConfirmPassword, setIsShowConfirmPassword] = useState(false)
+
+  useEffect(() => {
+    const getEmployees = async () => {
+      const employees = await dispatch(getAllEmployees())
+      setEmployees(employees?.payload)
+    }
+
+    const getUser = async () => {
+      const user = await dispatch(getUserById(id));
+      setFormData({ ...user.payload, confirmPassword: user.payload.password });
+    }
+
+    isEdit && getUser();
+
+    getEmployees();
+
+  }, [dispatch, id, isEdit])
 
   const handleChange = (target: EventTarget & (HTMLInputElement | HTMLTextAreaElement)) => {
     setFormData({
@@ -35,7 +57,7 @@ const CreateUser = () => {
     })
   }
 
-  const handleChangeEmployee = (_e: any, value: { id: string; name: string; }) => {
+  const handleChangeEmployee = (_e: any, value: any | null) => {
     setFormData({
       ...formData,
       employee: {
@@ -49,28 +71,26 @@ const CreateUser = () => {
     return formData.password !== formData.confirmPassword
   }
 
-  const handleSubmit = (event: { preventDefault: () => void }) => {
+  const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault()
 
-    if (invalidPassword()) return alert('Os campos de senhas estão divergentes')
+    if (invalidPassword()) return alert('Os campos de senhas estão divergentes');
 
-    dispatch(createUser({
+    const request = {
       userName: formData.userName,
       password: formData.password,
       employee: formData.employee
-    }))
-
-    setFormData(emptyFormData)
-  }
-
-  useEffect(() => {
-    const getEmployees = async () => {
-      const response = await dispatch(getAllEmployees())
-      setEmployees(response?.payload)
-      return response;
     }
-    getEmployees()
-  }, [dispatch])
+
+    if (isEdit) {
+      await dispatch(updateUser({ ...request, id: id }));
+      return alert('Registro alterado com sucesso!');
+    }
+
+    await dispatch(createUser(request));
+    setFormData(emptyFormData);
+    alert('Registro criado com sucesso!');
+  }
 
   return (
     <MiniDrawer title="Cadastrar Usuário">
@@ -87,6 +107,8 @@ const CreateUser = () => {
                 fullWidth
                 id='employee'
                 options={employees}
+                value={formData.employee}
+                isOptionEqualToValue={(option: any, value: any) => option.employee === value.employee}
                 getOptionLabel={(option: any) => option.name}
                 onChange={(e, value) => handleChangeEmployee(e, value)}
                 renderInput={(params) => <TextField {...params} label="Funcionário" />}
@@ -171,11 +193,11 @@ const CreateUser = () => {
             </Link>
 
             <Button
-              startIcon={<SaveIcon />}
+              startIcon={isEdit ? <EditIcon /> : <SaveIcon />}
               variant='contained'
               color='success'
               type="submit">
-              Salvar
+              {isEdit ? 'Editar' : 'Salvar'}
             </Button>
           </Box>
 
